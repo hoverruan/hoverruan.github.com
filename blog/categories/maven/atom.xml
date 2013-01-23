@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Maven | 码天下]]></title>
+  <link href="http://hoverruan.github.com/blog/categories/maven/atom.xml" rel="self"/>
+  <link href="http://hoverruan.github.com/"/>
+  <updated>2013-01-23T08:15:06+08:00</updated>
+  <id>http://hoverruan.github.com/</id>
+  <author>
+    <name><![CDATA[Hover Ruan]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Maven的生命周期和默认绑定的Plugin]]></title>
+    <link href="http://hoverruan.github.com/blog/2013/01/10/maven-build-lifecycle/"/>
+    <updated>2013-01-10T13:01:00+08:00</updated>
+    <id>http://hoverruan.github.com/blog/2013/01/10/maven-build-lifecycle</id>
+    <content type="html"><![CDATA[<h2>三套构建生命周期</h2>
+
+<p>Maven有三套独立的Lifecycle：</p>
+
+<ul>
+<li>clean阶段: 项目清理阶段</li>
+<li>default阶段: 默认阶段，大部分的编译、测试、打包和部署都在这个阶段完成</li>
+<li>site阶段: 发布项目网站和文档阶段</li>
+</ul>
+
+
+<p>每个Lifecycle还定义了按顺序执行的Phases，即从命令行指定执行的Phase，必然会先依次执行其前面的所有的Phase：</p>
+
+<ul>
+<li>如果你执行 <code>mvn clean</code> Maven实际上会依次执行 <code>pre-clean</code> 和 <code>clean</code> 两个Phase</li>
+<li>如果执行 <code>mvn install</code> Maven实际上会依次执行Default阶段前面的所有的22个Phase</li>
+<li>如果执行 <code>mvn clean package</code> Maven首先会依次执行Clean阶段的 <code>pre-clean</code>, <code>clean</code>，然后再依次执行Default阶段的 <code>validate</code>, <code>initialize</code>, … 一直到 <code>package</code> 等17个Phase</li>
+</ul>
+
+
+<p>三套Lifecycle相互独立，所以在执行 <code>mvn install</code> 的时候，是不会触发任何的Clean阶段的动作的。</p>
+
+<p><strong> Clean阶段 </strong></p>
+
+<ol>
+<li>pre-clean</li>
+<li>clean</li>
+<li>post-clean</li>
+</ol>
+
+
+<p><strong> Default阶段 </strong></p>
+
+<ol>
+<li>validate</li>
+<li>initialize</li>
+<li>generate-sources</li>
+<li>process-sources</li>
+<li>generate-resources</li>
+<li>process-resources</li>
+<li>compile</li>
+<li>process-classes</li>
+<li>generate-test-sources</li>
+<li>process-test-sources</li>
+<li>generate-test-resources</li>
+<li>process-test-resources</li>
+<li>test-compile</li>
+<li>process-test-classes</li>
+<li>test</li>
+<li>prepare-package</li>
+<li>package</li>
+<li>pre-integration-test</li>
+<li>integration-test</li>
+<li>post-integration-test</li>
+<li>verify</li>
+<li>install</li>
+<li>deploy</li>
+</ol>
+
+
+<h3>Site阶段</h3>
+
+<ol>
+<li>pre-site</li>
+<li>site</li>
+<li>post-site</li>
+<li>site-deploy</li>
+</ol>
+
+
+<h2>Lifecycle和Maven Plugin</h2>
+
+<p>Maven的核心非常精简，除了核心的Lifecycle、Phase等过程的定义之外，所有的实际操作都是以Plugin的方式提供的。为了减少用户的配置，提高易用性，Maven在发布的时候，已经默认绑定了一些基本的plugin，可以完成大部分的编译、测试、打包和发布等操作。</p>
+
+<h3>Clean Lifecycle Bindings</h3>
+
+<table><tr class="a"><td align="left"><tt>clean</tt></td><td align="left"><tt>clean:clean</tt></td></tr></table>
+
+
+<h3>Default Lifecycle Bindings - Packaging <code>ejb</code> / <code>ejb3</code> / <code>jar</code> / <code>par</code> / <code>rar</code> / <code>war</code></h3>
+
+<table border="1" class="bodyTable"><tr class="a"><td align="left"><tt>process-resources</tt></td><td align="left"><tt>resources:resources</tt></td></tr><tr class="b"><td align="left"><tt>compile</tt></td><td align="left"><tt>compiler:compile</tt></td></tr><tr class="a"><td align="left"><tt>process-test-resources</tt></td><td align="left"><tt>resources:testResources</tt></td></tr><tr class="b"><td align="left"><tt>test-compile</tt></td><td align="left"><tt>compiler:testCompile</tt></td></tr><tr class="a"><td align="left"><tt>test</tt></td><td align="left"><tt>surefire:test</tt></td></tr><tr class="b"><td align="left"><tt>package</tt></td><td align="left"><tt>ejb:ejb</tt> <i>or</i> <tt>ejb3:ejb3</tt> <i>or</i> <tt>jar:jar</tt> <i>or</i> <tt>par:par</tt> <i>or</i> <tt>rar:rar</tt> <i>or</i> <tt>war:war</tt></td></tr><tr class="a"><td align="left"><tt>install</tt></td><td align="left"><tt>install:install</tt></td></tr><tr class="b"><td align="left"><tt>deploy</tt></td><td align="left"><tt>deploy:deploy</tt></td></tr></table>
+
+
+<h3>Default Lifecycle Bindings - Packaging <code>ear</code></h3>
+
+<table border="1" class="bodyTable"><tr class="a"><td align="left"><tt>generate-resources</tt></td><td align="left"><tt>ear:generateApplicationXml</tt></td></tr><tr class="b"><td align="left"><tt>process-resources</tt></td><td align="left"><tt>resources:resources</tt></td></tr><tr class="a"><td align="left"><tt>package</tt></td><td align="left"><tt>ear:ear</tt></td></tr><tr class="b"><td align="left"><tt>install</tt></td><td align="left"><tt>install:install</tt></td></tr><tr class="a"><td align="left"><tt>deploy</tt></td><td align="left"><tt>deploy:deploy</tt></td></tr></table>
+
+
+<h3>Default Lifecycle Bindings - Packaging <code>maven-plugin</code></h3>
+
+<table border="1" class="bodyTable"><tr class="a"><td align="left"><tt>generate-resources</tt></td><td align="left"><tt>plugin:descriptor</tt></td></tr><tr class="b"><td align="left"><tt>process-resources</tt></td><td align="left"><tt>resources:resources</tt></td></tr><tr class="a"><td align="left"><tt>compile</tt></td><td align="left"><tt>compiler:compile</tt></td></tr><tr class="b"><td align="left"><tt>process-test-resources</tt></td><td align="left"><tt>resources:testResources</tt></td></tr><tr class="a"><td align="left"><tt>test-compile</tt></td><td align="left"><tt>compiler:testCompile</tt></td></tr><tr class="b"><td align="left"><tt>test</tt></td><td align="left"><tt>surefire:test</tt></td></tr><tr class="a"><td align="left"><tt>package</tt></td><td align="left"><tt>jar:jar</tt> <i>and</i> <tt>plugin:addPluginArtifactMetadata</tt></td></tr><tr class="b"><td align="left"><tt>install</tt></td><td align="left"><tt>install:install</tt> <i>and</i> <tt>plugin:updateRegistry</tt></td></tr><tr class="a"><td align="left"><tt>deploy</tt></td><td align="left"><tt>deploy:deploy</tt></td></tr></table>
+
+
+<h3>Default Lifecycle Bindings - Packaging <code>pom</code></h3>
+
+<table border="1" class="bodyTable"><tr class="a"><td align="left"><tt>package</tt></td><td align="left"><tt>site:attach-descriptor</tt></td></tr><tr class="b"><td align="left"><tt>install</tt></td><td align="left"><tt>install:install</tt></td></tr><tr class="a"><td align="left"><tt>deploy</tt></td><td align="left"><tt>deploy:deploy</tt></td></tr></table>
+
+
+<h3>Site Lifecycle Bindings</h3>
+
+<table border="1" class="bodyTable"><tr class="a"><td align="left"><tt>site</tt></td><td align="left"><tt>site:site</tt></td></tr><tr class="b"><td align="left"><tt>site-deploy</tt></td><td align="left"><tt>site:deploy</tt></td></tr></table>
+
+]]></content>
+  </entry>
+  
+</feed>
