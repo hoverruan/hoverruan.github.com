@@ -38,7 +38,7 @@ Apache Tomcat Maven Plugin允许直接运行一个Web项目，无需额外下载
 只需执行以下命令即可启动服务：
 
 ```
-$ mvn tomcat6:run
+mvn tomcat6:run
 ```
 
 当然，可以在IDE里面配置执行此Maven Goal，可以方便地启动或者调试。
