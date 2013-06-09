@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Maven | 码天下]]></title>
+  <title><![CDATA[Category: Maven | 一码走天下]]></title>
   <link href="http://hoverruan.github.com/blog/categories/maven/atom.xml" rel="self"/>
   <link href="http://hoverruan.github.com/"/>
-  <updated>2013-06-09T10:25:56+08:00</updated>
+  <updated>2013-06-09T15:44:58+08:00</updated>
   <id>http://hoverruan.github.com/</id>
   <author>
     <name><![CDATA[Hover Ruan]]></name>

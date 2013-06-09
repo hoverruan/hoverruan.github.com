@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>一码走天下</title>
+  <title>服务器开发工程师的学习路线图 - 一码走天下</title>
   <meta name="author" content="Hover Ruan">
 
   
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://hoverruan.github.com">
+  <link rel="canonical" href="http://hoverruan.github.com/blog/2013/06/09/server-side-engineer-roadmap">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="一码走天下" type="application/atom+xml">
@@ -63,15 +63,12 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2013/06/09/server-side-engineer-roadmap/">服务器开发工程师的学习路线图</a></h1>
+      <h1 class="entry-title">服务器开发工程师的学习路线图</h1>
     
     
       <p class="meta">
@@ -94,7 +91,7 @@
   </header>
 
 
-  <div class="entry-content"><p>到成都研发中心已经有一个多月，现在已经有10位工程师逐渐地参与到服务器的开发工作中来，他们大部分之前都是做客户端的开发工作，有做iOS开发的，有做Android开发的，还有部分之前是做Symbian的开发工作的，大部分都没有服务器开发工作的经验，有一些甚至之前也没有接触过Java。</p>
+<div class="entry-content"><p>到成都研发中心已经有一个多月，现在已经有10位工程师逐渐地参与到服务器的开发工作中来，他们大部分之前都是做客户端的开发工作，有做iOS开发的，有做Android开发的，还有部分之前是做Symbian的开发工作的，大部分都没有服务器开发工作的经验，有一些甚至之前也没有接触过Java。</p>
 
 <p>在实践中学习的效率是最高的，所以我们不会专门安排一段较长的时间专门给他们用于学习，通常我们要求他们用一天的时间搭建开发环境，然后第二天或者第三天就开始实际的编码。这听起来似乎有点残酷，或者说，新手能够在第二天就写出有用的代码吗？</p>
 
@@ -226,132 +223,16 @@
 </ul>
 
 </div>
-  
-  
 
 
-    </article>
-  
-  
-    <article>
+  <footer>
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/01/10/maven-build-lifecycle/">Maven的生命周期和默认绑定的Plugin</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
   
 
+<span class="byline author vcard">Posted by <span class="fn">Hover Ruan</span></span>
 
-<time datetime="2013-01-10T13:01:00+08:00" pubdate data-updated="true">Jan 10<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>三套构建生命周期</h2>
-
-<p>Maven有三套独立的Lifecycle：</p>
-
-<ul>
-<li>clean阶段: 项目清理阶段</li>
-<li>default阶段: 默认阶段，大部分的编译、测试、打包和部署都在这个阶段完成</li>
-<li>site阶段: 发布项目网站和文档阶段</li>
-</ul>
-
-
-<p>每个Lifecycle还定义了按顺序执行的Phases，即从命令行指定执行的Phase，必然会先依次执行其前面的所有的Phase：</p>
-
-<ul>
-<li>如果你执行 <code>mvn clean</code> Maven实际上会依次执行 <code>pre-clean</code> 和 <code>clean</code> 两个Phase</li>
-<li>如果执行 <code>mvn install</code> Maven实际上会依次执行Default阶段前面的所有的22个Phase</li>
-<li>如果执行 <code>mvn clean package</code> Maven首先会依次执行Clean阶段的 <code>pre-clean</code>, <code>clean</code>，然后再依次执行Default阶段的 <code>validate</code>, <code>initialize</code>, … 一直到 <code>package</code> 等17个Phase</li>
-</ul>
-
-
-<p>三套Lifecycle相互独立，所以在执行 <code>mvn install</code> 的时候，是不会触发任何的Clean阶段的动作的。</p>
-
-<p><strong> Clean阶段 </strong></p>
-
-<ol>
-<li>pre-clean</li>
-<li>clean</li>
-<li>post-clean</li>
-</ol>
-
-
-<p><strong> Default阶段 </strong></p>
-
-<ol>
-<li>validate</li>
-<li>initialize</li>
-<li>generate-sources</li>
-<li>process-sources</li>
-<li>generate-resources</li>
-<li>process-resources</li>
-<li>compile</li>
-<li>process-classes</li>
-<li>generate-test-sources</li>
-<li>process-test-sources</li>
-<li>generate-test-resources</li>
-<li>process-test-resources</li>
-<li>test-compile</li>
-<li>process-test-classes</li>
-<li>test</li>
-<li>prepare-package</li>
-<li>package</li>
-<li>pre-integration-test</li>
-<li>integration-test</li>
-<li>post-integration-test</li>
-<li>verify</li>
-<li>install</li>
-<li>deploy</li>
-</ol>
-
-
-<h3>Site阶段</h3>
-
-<ol>
-<li>pre-site</li>
-<li>site</li>
-<li>post-site</li>
-<li>site-deploy</li>
-</ol>
-
-
-<h2>Lifecycle和Maven Plugin</h2>
-
-<p>Maven的核心非常精简，除了核心的Lifecycle、Phase等过程的定义之外，所有的实际操作都是以Plugin的方式提供的。为了减少用户的配置，提高易用性，Maven在发布的时候，已经默认绑定了一些基本的plugin，可以完成大部分的编译、测试、打包和发布等操作。</p>
-
-<p>请参考官方文档 <a href="http://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html">Introduction to the Build Lifecycle</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/01/06/using-tomcat-maven-plugin-for-local-development/">在本地开发中使用Tomcat Maven Plugin来简化开发工作</a></h1>
-    
-    
-      <p class="meta">
-        
 
 
 
@@ -363,140 +244,38 @@
   
 
 
-<time datetime="2013-01-06T23:25:00+08:00" pubdate data-updated="true">Jan 6<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>手动配置Tomcat服务器</h2>
-
-<p>在日常开发的过程中，我们经常需要配置一个本地的服务器进行本地的开发测试环境；以Tomcat服务器为例，配置的过程最少包含这样的一些步骤：</p>
-
-<ol>
-<li>下载并安装Tomcat服务器</li>
-<li>在IDE中配置一个本地Tomcat的运行环境</li>
-<li>用配置好的Tomcat运行环境来对项目进行开发和测试</li>
-</ol>
-
-
-<p>如果你的项目使用Maven来进行管理，则每次你的pom.xml文件发生修改之后，IntelliJ IDEA会重新导入项目，原来对Web项目的特殊配置就会被重置成默认值，必须重新进行配置。</p>
-
-<h2>使用Tomcat Maven Plugin</h2>
-
-<p>Apache Tomcat Maven Plugin允许直接运行一个Web项目，无需额外下载安装Tomcat服务器，也无需在IDE中进行额外的配置，每次只需要一个简单的Maven命令即可启动一个Tomcat服务进行开发或者调试：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;plugins&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;plugin&gt;</span>
-</span><span class='line'>      <span class="nt">&lt;groupId&gt;</span>org.apache.tomcat.maven<span class="nt">&lt;/groupId&gt;</span>
-</span><span class='line'>      <span class="nt">&lt;artifactId&gt;</span>tomcat6-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
-</span><span class='line'>      <span class="nt">&lt;version&gt;</span>2.0<span class="nt">&lt;/version&gt;</span>
-</span><span class='line'>      <span class="nt">&lt;configuration&gt;</span>
-</span><span class='line'>          <span class="nt">&lt;path&gt;</span>/${project.build.finalName}<span class="nt">&lt;/path&gt;</span>
-</span><span class='line'>          <span class="nt">&lt;additionalClasspathDirs&gt;</span>
-</span><span class='line'>              <span class="nt">&lt;additionalClasspathDir&gt;</span>${project.basedir}/build/local<span class="nt">&lt;/additionalClasspathDir&gt;</span>
-</span><span class='line'>          <span class="nt">&lt;/additionalClasspathDirs&gt;</span>
-</span><span class='line'>      <span class="nt">&lt;/configuration&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;/plugin&gt;</span>
-</span><span class='line'><span class="nt">&lt;/plugins&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>只需执行以下命令即可启动服务：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='xml'><span class='line'>mvn tomcat6:run
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>当然，可以在IDE里面配置执行此Maven Goal，可以方便地启动或者调试。</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
+<time datetime="2013-06-09T10:39:00+08:00" pubdate data-updated="true">Jun 9<span>th</span>, 2013</time>
       
-  <header>
+
+
+    </p>
     
-      <h1 class="entry-title"><a href="/blog/2012/12/14/setup-my-blog-using-octopress/">用Octopress创建我的Blog</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
+      <div class="sharing">
   
-
-
-<time datetime="2012-12-14T14:59:00+08:00" pubdate data-updated="true">Dec 14<span>th</span>, 2012</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>今年ThoughtWorks开源大奖得主是<a href="https://github.com/moredip/Frank">Frank</a>的作者<a href="https://github.com/moredip">Pete Hodgson</a>, 在浏览其github主页时发现了他的博客Repository &lt;<a href="https://github.com/moredip/blog.thepete.net">Being Agile</a>>，顿时眼前一亮，这正是我一直寻找的在Github上面搭建博客系统的理想方案！</p>
-
-<h2>Octopress博客系统</h2>
-
-<p>这是基于<a href="https://github.com/imathis/octopress">Octopress</a>的一个博客系统，是对著名的Github博客系统 <a href="https://github.com/mojombo/jekyll">Jekyll</a>进行二次开发的衍生产品，对手机访问进行了很大的优化，同时比Jekyll看起来更像是一个传统的博客。前者的风格看起来实在有点太简单了，需要花一些功夫才能在Jekyll的基础上配置一个看上去比较顺眼的风格的博客，因此一直迟迟没有动手。</p>
-
-<p><a href="http://pages.github.com/">GitHub Pages</a>是Github又一个简单而强大的功能，包含免费的Hosting服务并且支持Theme功能。Github公司自己也使用Jekyll作为他们网站大部分页面的管理方案。</p>
-
-<h2>怎么才能坚持写博客？</h2>
-
-<p>我的第一个博客系统，是2009年在Google App Engine出来之后，自己用Java作为练手写的一个简单的博客发布程序：<a href="http://hoverblog.appspot.com/">http://hoverblog.appspot.com/</a>，尝试写了三篇文章之后就没有再更新了，一方面是因为翻墙不太方便，另一方面也是因为小孩的出生导致没有太多的时间去完善博客发布系统，因此就此搁下了。</p>
-
-<p>究其原因，尝试自己去实现一个博客发布系统应该是最大的障碍，一个功能完整的程序是需要花很多心思和时间的，<a href="https://github.com/hoverruan/weiboclient4j">weiboclient4j</a>已经写了有一年多了，到现在都还没有实现全部的微博API 2.0的接口。如果目标是写博客，就应该用尽量简单的方案来实现这个目标，显然自己实现一个博客发布程序是最差的一种做法！</p>
-
-<p>SMART原则是目标管理中的一种方法，五个字母分别对应了五个英文单词：Specific（明确性）、Measurable（可衡量性）、Attainable（可达成性）、Relevant（相关性）和Time-bound（时限性）。SMART让任务目标更加具有可操作性，能够将目标转化具体的小目标和具体的工作安排。</p>
-
-<p>根据SMART指导原则，下面的一些目标应该可能帮助你更快地养成坚持写博客的习惯：</p>
-
-<ul>
-<li>在 1 ~ 2 周内选定一个简单易用的博客发布方案</li>
-<li>在开始的前两个月，坚持每 2 ~ 3 周写一篇博客</li>
-</ul>
-
-
-<p>希望我们都能坚持下来～</p>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://hoverruan.github.com/blog/2013/06/09/server-side-engineer-roadmap/" data-via="" data-counturl="http://hoverruan.github.com/blog/2013/06/09/server-side-engineer-roadmap/" >Tweet</a>
+  
+  
+  
 </div>
-  
-  
 
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/01/10/maven-build-lifecycle/" title="Previous Post: Maven的生命周期和默认绑定的Plugin">&laquo; Maven的生命周期和默认绑定的Plugin</a>
+      
+      
+    </p>
+  </footer>
+</article>
 
-    </article>
-  
-  <div class="pagination">
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
+  </section>
+
+</div>
+
 <aside class="sidebar">
   
     <section>
@@ -525,7 +304,7 @@
 <section>
   <h1>GitHub Repos</h1>
   <ul id="gh_repos">
-    <li class="loading">Status updating&#8230;</li>
+    <li class="loading">Status updating...</li>
   </ul>
   
   <a href="https://github.com/hoverruan">@hoverruan</a> on GitHub
@@ -558,6 +337,7 @@
   
 </aside>
 
+
     </div>
   </div>
   <footer role="contentinfo"><p>
@@ -572,7 +352,10 @@
       var disqus_shortname = 'hoverruanblog';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://hoverruan.github.com/blog/2013/06/09/server-side-engineer-roadmap/';
+        var disqus_url = 'http://hoverruan.github.com/blog/2013/06/09/server-side-engineer-roadmap/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
