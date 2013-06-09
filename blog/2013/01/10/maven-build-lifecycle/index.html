@@ -20,14 +20,14 @@ site阶段: 发布项目网站和文档阶段 每个Lifecycle还定义了按顺�
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://hoverruan.github.com/blog/2013/01/10/maven-build-lifecycle/">
+  <link rel="canonical" href="http://hoverruan.github.com/blog/2013/01/10/maven-build-lifecycle">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <script src="/javascripts/modernizr-2.0.js"></script>
-  <script src="/javascripts/ender.js"></script>
-  <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <link href="/atom.xml" rel="alternate" title="码天下" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
@@ -167,35 +167,7 @@ site阶段: 发布项目网站和文档阶段 每个Lifecycle还定义了按顺�
 
 <p>Maven的核心非常精简，除了核心的Lifecycle、Phase等过程的定义之外，所有的实际操作都是以Plugin的方式提供的。为了减少用户的配置，提高易用性，Maven在发布的时候，已经默认绑定了一些基本的plugin，可以完成大部分的编译、测试、打包和发布等操作。</p>
 
-<h3>Clean Lifecycle Bindings</h3>
-
-<table><tr class="a"><td align="left"><tt>clean</tt></td><td align="left"><tt>clean:clean</tt></td></tr></table>
-
-
-<h3>Default Lifecycle Bindings - Packaging <code>ejb</code> / <code>ejb3</code> / <code>jar</code> / <code>par</code> / <code>rar</code> / <code>war</code></h3>
-
-<table border="1" class="bodyTable"><tr class="a"><td align="left"><tt>process-resources</tt></td><td align="left"><tt>resources:resources</tt></td></tr><tr class="b"><td align="left"><tt>compile</tt></td><td align="left"><tt>compiler:compile</tt></td></tr><tr class="a"><td align="left"><tt>process-test-resources</tt></td><td align="left"><tt>resources:testResources</tt></td></tr><tr class="b"><td align="left"><tt>test-compile</tt></td><td align="left"><tt>compiler:testCompile</tt></td></tr><tr class="a"><td align="left"><tt>test</tt></td><td align="left"><tt>surefire:test</tt></td></tr><tr class="b"><td align="left"><tt>package</tt></td><td align="left"><tt>ejb:ejb</tt> <i>or</i> <tt>ejb3:ejb3</tt> <i>or</i> <tt>jar:jar</tt> <i>or</i> <tt>par:par</tt> <i>or</i> <tt>rar:rar</tt> <i>or</i> <tt>war:war</tt></td></tr><tr class="a"><td align="left"><tt>install</tt></td><td align="left"><tt>install:install</tt></td></tr><tr class="b"><td align="left"><tt>deploy</tt></td><td align="left"><tt>deploy:deploy</tt></td></tr></table>
-
-
-<h3>Default Lifecycle Bindings - Packaging <code>ear</code></h3>
-
-<table border="1" class="bodyTable"><tr class="a"><td align="left"><tt>generate-resources</tt></td><td align="left"><tt>ear:generateApplicationXml</tt></td></tr><tr class="b"><td align="left"><tt>process-resources</tt></td><td align="left"><tt>resources:resources</tt></td></tr><tr class="a"><td align="left"><tt>package</tt></td><td align="left"><tt>ear:ear</tt></td></tr><tr class="b"><td align="left"><tt>install</tt></td><td align="left"><tt>install:install</tt></td></tr><tr class="a"><td align="left"><tt>deploy</tt></td><td align="left"><tt>deploy:deploy</tt></td></tr></table>
-
-
-<h3>Default Lifecycle Bindings - Packaging <code>maven-plugin</code></h3>
-
-<table border="1" class="bodyTable"><tr class="a"><td align="left"><tt>generate-resources</tt></td><td align="left"><tt>plugin:descriptor</tt></td></tr><tr class="b"><td align="left"><tt>process-resources</tt></td><td align="left"><tt>resources:resources</tt></td></tr><tr class="a"><td align="left"><tt>compile</tt></td><td align="left"><tt>compiler:compile</tt></td></tr><tr class="b"><td align="left"><tt>process-test-resources</tt></td><td align="left"><tt>resources:testResources</tt></td></tr><tr class="a"><td align="left"><tt>test-compile</tt></td><td align="left"><tt>compiler:testCompile</tt></td></tr><tr class="b"><td align="left"><tt>test</tt></td><td align="left"><tt>surefire:test</tt></td></tr><tr class="a"><td align="left"><tt>package</tt></td><td align="left"><tt>jar:jar</tt> <i>and</i> <tt>plugin:addPluginArtifactMetadata</tt></td></tr><tr class="b"><td align="left"><tt>install</tt></td><td align="left"><tt>install:install</tt> <i>and</i> <tt>plugin:updateRegistry</tt></td></tr><tr class="a"><td align="left"><tt>deploy</tt></td><td align="left"><tt>deploy:deploy</tt></td></tr></table>
-
-
-<h3>Default Lifecycle Bindings - Packaging <code>pom</code></h3>
-
-<table border="1" class="bodyTable"><tr class="a"><td align="left"><tt>package</tt></td><td align="left"><tt>site:attach-descriptor</tt></td></tr><tr class="b"><td align="left"><tt>install</tt></td><td align="left"><tt>install:install</tt></td></tr><tr class="a"><td align="left"><tt>deploy</tt></td><td align="left"><tt>deploy:deploy</tt></td></tr></table>
-
-
-<h3>Site Lifecycle Bindings</h3>
-
-<table border="1" class="bodyTable"><tr class="a"><td align="left"><tt>site</tt></td><td align="left"><tt>site:site</tt></td></tr><tr class="b"><td align="left"><tt>site-deploy</tt></td><td align="left"><tt>site:deploy</tt></td></tr></table>
-
+<p>请参考官方文档 <a href="http://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html">Introduction to the Build Lifecycle</a></p>
 </div>
 
 
@@ -286,7 +258,7 @@ site阶段: 发布项目网站和文档阶段 每个Lifecycle还定义了按顺�
   <a href="https://github.com/hoverruan">@hoverruan</a> on GitHub
   
   <script type="text/javascript">
-    $.domReady(function(){
+    $(document).ready(function(){
         if (!window.jXHR){
             var jxhr = document.createElement('script');
             jxhr.type = 'text/javascript';
@@ -305,7 +277,6 @@ site阶段: 发布项目网站和文档阶段 每个Lifecycle还定义了按顺�
   </script>
   <script src="/javascripts/github.js" type="text/javascript"> </script>
 </section>
-
 
 
 
