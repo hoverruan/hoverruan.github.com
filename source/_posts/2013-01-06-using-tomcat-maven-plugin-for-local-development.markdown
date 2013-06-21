@@ -3,7 +3,7 @@ layout: post
 title: "在本地开发中使用Tomcat Maven Plugin来简化开发工作"
 date: 2013-01-06 23:25
 comments: true
-categories: 
+categories: [Maven, Tomcat]
 ---
 
 ## 手动配置Tomcat服务器

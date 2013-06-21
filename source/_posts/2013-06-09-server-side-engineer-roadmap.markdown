@@ -3,7 +3,7 @@ layout: post
 title: "服务器开发工程师的学习路线图"
 date: 2013-06-09 10:39
 comments: true
-categories: 
+categories: 杂谈
 ---
 
 到成都研发中心已经有一个多月，现在已经有10位工程师逐渐地参与到服务器的开发工作中来，他们大部分之前都是做客户端的开发工作，有做iOS开发的，有做Android开发的，还有部分之前是做Symbian的开发工作的，大部分都没有服务器开发工作的经验，有一些甚至之前也没有接触过Java。
@@ -107,4 +107,3 @@ MySQL作为最流行的数据存储方案，已经统治了这个领域很多年
 - Redis
 - Hadoop 和 HBase
 - Neo4j
-

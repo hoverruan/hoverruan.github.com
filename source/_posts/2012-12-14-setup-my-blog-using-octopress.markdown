@@ -3,7 +3,7 @@ layout: post
 title: "用Octopress创建我的Blog"
 date: 2012-12-14 14:59
 comments: true
-categories: 
+categories: [Octopress, Jekyll, GitHub]
 ---
 
 今年ThoughtWorks开源大奖得主是[Frank](https://github.com/moredip/Frank)的作者[Pete Hodgson](https://github.com/moredip), 在浏览其github主页时发现了他的博客Repository <[Being Agile](https://github.com/moredip/blog.thepete.net)>，顿时眼前一亮，这正是我一直寻找的在Github上面搭建博客系统的理想方案！
