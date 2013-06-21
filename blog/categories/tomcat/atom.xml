@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Tomcat | 一码走天下]]></title>
+  <link href="http://hoverruan.github.com/blog/categories/tomcat/atom.xml" rel="self"/>
+  <link href="http://hoverruan.github.com/"/>
+  <updated>2013-06-21T16:01:04+08:00</updated>
+  <id>http://hoverruan.github.com/</id>
+  <author>
+    <name><![CDATA[Hover Ruan]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[在本地开发中使用Tomcat Maven Plugin来简化开发工作]]></title>
+    <link href="http://hoverruan.github.com/blog/2013/01/06/using-tomcat-maven-plugin-for-local-development/"/>
+    <updated>2013-01-06T23:25:00+08:00</updated>
+    <id>http://hoverruan.github.com/blog/2013/01/06/using-tomcat-maven-plugin-for-local-development</id>
+    <content type="html"><![CDATA[<h2>手动配置Tomcat服务器</h2>
+
+<p>在日常开发的过程中，我们经常需要配置一个本地的服务器进行本地的开发测试环境；以Tomcat服务器为例，配置的过程最少包含这样的一些步骤：</p>
+
+<ol>
+<li>下载并安装Tomcat服务器</li>
+<li>在IDE中配置一个本地Tomcat的运行环境</li>
+<li>用配置好的Tomcat运行环境来对项目进行开发和测试</li>
+</ol>
+
+
+<p>如果你的项目使用Maven来进行管理，则每次你的pom.xml文件发生修改之后，IntelliJ IDEA会重新导入项目，原来对Web项目的特殊配置就会被重置成默认值，必须重新进行配置。</p>
+
+<h2>使用Tomcat Maven Plugin</h2>
+
+<p>Apache Tomcat Maven Plugin允许直接运行一个Web项目，无需额外下载安装Tomcat服务器，也无需在IDE中进行额外的配置，每次只需要一个简单的Maven命令即可启动一个Tomcat服务进行开发或者调试：</p>
+
+<p>``` xml
+<plugins></p>
+
+<pre><code>&lt;plugin&gt;
+    &lt;groupId&gt;org.apache.tomcat.maven&lt;/groupId&gt;
+    &lt;artifactId&gt;tomcat6-maven-plugin&lt;/artifactId&gt;
+    &lt;version&gt;2.0&lt;/version&gt;
+    &lt;configuration&gt;
+        &lt;path&gt;/${project.build.finalName}&lt;/path&gt;
+        &lt;additionalClasspathDirs&gt;
+            &lt;additionalClasspathDir&gt;${project.basedir}/build/local&lt;/additionalClasspathDir&gt;
+        &lt;/additionalClasspathDirs&gt;
+    &lt;/configuration&gt;
+&lt;/plugin&gt;
+</code></pre>
+
+<p></plugins>
+```
+只需执行以下命令即可启动服务：</p>
+
+<p><code>
+mvn tomcat6:run
+</code></p>
+
+<p>当然，可以在IDE里面配置执行此Maven Goal，可以方便地启动或者调试。</p>
+]]></content>
+  </entry>
+  
+</feed>

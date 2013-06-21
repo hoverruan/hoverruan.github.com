@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Maven | 一码走天下]]></title>
-  <link href="http://hoverruan.github.com/blog/categories/maven/atom.xml" rel="self"/>
+  <title><![CDATA[Category: Checkstyle | 一码走天下]]></title>
+  <link href="http://hoverruan.github.com/blog/categories/checkstyle/atom.xml" rel="self"/>
   <link href="http://hoverruan.github.com/"/>
   <updated>2013-06-21T16:01:04+08:00</updated>
   <id>http://hoverruan.github.com/</id>
@@ -113,139 +113,6 @@ Leader 还有什么用？那是要丢饭碗的！所以他们必须承担执行�
 <p><code>shell
 $ less target/checkstyle-results.xml
 </code></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Maven的生命周期和默认绑定的Plugin]]></title>
-    <link href="http://hoverruan.github.com/blog/2013/01/10/maven-build-lifecycle/"/>
-    <updated>2013-01-10T13:01:00+08:00</updated>
-    <id>http://hoverruan.github.com/blog/2013/01/10/maven-build-lifecycle</id>
-    <content type="html"><![CDATA[<h2>三套构建生命周期</h2>
-
-<p>Maven有三套独立的Lifecycle：</p>
-
-<ul>
-<li>clean阶段: 项目清理阶段</li>
-<li>default阶段: 默认阶段，大部分的编译、测试、打包和部署都在这个阶段完成</li>
-<li>site阶段: 发布项目网站和文档阶段</li>
-</ul>
-
-
-<p>每个Lifecycle还定义了按顺序执行的Phases，即从命令行指定执行的Phase，必然会先依次执行其前面的所有的Phase：</p>
-
-<ul>
-<li>如果你执行 <code>mvn clean</code> Maven实际上会依次执行 <code>pre-clean</code> 和 <code>clean</code> 两个Phase</li>
-<li>如果执行 <code>mvn install</code> Maven实际上会依次执行Default阶段前面的所有的22个Phase</li>
-<li>如果执行 <code>mvn clean package</code> Maven首先会依次执行Clean阶段的 <code>pre-clean</code>, <code>clean</code>，然后再依次执行Default阶段的 <code>validate</code>, <code>initialize</code>, … 一直到 <code>package</code> 等17个Phase</li>
-</ul>
-
-
-<p>三套Lifecycle相互独立，所以在执行 <code>mvn install</code> 的时候，是不会触发任何的Clean阶段的动作的。</p>
-
-<p><strong> Clean阶段 </strong></p>
-
-<ol>
-<li>pre-clean</li>
-<li>clean</li>
-<li>post-clean</li>
-</ol>
-
-
-<p><strong> Default阶段 </strong></p>
-
-<ol>
-<li>validate</li>
-<li>initialize</li>
-<li>generate-sources</li>
-<li>process-sources</li>
-<li>generate-resources</li>
-<li>process-resources</li>
-<li>compile</li>
-<li>process-classes</li>
-<li>generate-test-sources</li>
-<li>process-test-sources</li>
-<li>generate-test-resources</li>
-<li>process-test-resources</li>
-<li>test-compile</li>
-<li>process-test-classes</li>
-<li>test</li>
-<li>prepare-package</li>
-<li>package</li>
-<li>pre-integration-test</li>
-<li>integration-test</li>
-<li>post-integration-test</li>
-<li>verify</li>
-<li>install</li>
-<li>deploy</li>
-</ol>
-
-
-<h3>Site阶段</h3>
-
-<ol>
-<li>pre-site</li>
-<li>site</li>
-<li>post-site</li>
-<li>site-deploy</li>
-</ol>
-
-
-<h2>Lifecycle和Maven Plugin</h2>
-
-<p>Maven的核心非常精简，除了核心的Lifecycle、Phase等过程的定义之外，所有的实际操作都是以Plugin的方式提供的。为了减少用户的配置，提高易用性，Maven在发布的时候，已经默认绑定了一些基本的plugin，可以完成大部分的编译、测试、打包和发布等操作。</p>
-
-<p>请参考官方文档 <a href="http://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html">Introduction to the Build Lifecycle</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[在本地开发中使用Tomcat Maven Plugin来简化开发工作]]></title>
-    <link href="http://hoverruan.github.com/blog/2013/01/06/using-tomcat-maven-plugin-for-local-development/"/>
-    <updated>2013-01-06T23:25:00+08:00</updated>
-    <id>http://hoverruan.github.com/blog/2013/01/06/using-tomcat-maven-plugin-for-local-development</id>
-    <content type="html"><![CDATA[<h2>手动配置Tomcat服务器</h2>
-
-<p>在日常开发的过程中，我们经常需要配置一个本地的服务器进行本地的开发测试环境；以Tomcat服务器为例，配置的过程最少包含这样的一些步骤：</p>
-
-<ol>
-<li>下载并安装Tomcat服务器</li>
-<li>在IDE中配置一个本地Tomcat的运行环境</li>
-<li>用配置好的Tomcat运行环境来对项目进行开发和测试</li>
-</ol>
-
-
-<p>如果你的项目使用Maven来进行管理，则每次你的pom.xml文件发生修改之后，IntelliJ IDEA会重新导入项目，原来对Web项目的特殊配置就会被重置成默认值，必须重新进行配置。</p>
-
-<h2>使用Tomcat Maven Plugin</h2>
-
-<p>Apache Tomcat Maven Plugin允许直接运行一个Web项目，无需额外下载安装Tomcat服务器，也无需在IDE中进行额外的配置，每次只需要一个简单的Maven命令即可启动一个Tomcat服务进行开发或者调试：</p>
-
-<p>``` xml
-<plugins></p>
-
-<pre><code>&lt;plugin&gt;
-    &lt;groupId&gt;org.apache.tomcat.maven&lt;/groupId&gt;
-    &lt;artifactId&gt;tomcat6-maven-plugin&lt;/artifactId&gt;
-    &lt;version&gt;2.0&lt;/version&gt;
-    &lt;configuration&gt;
-        &lt;path&gt;/${project.build.finalName}&lt;/path&gt;
-        &lt;additionalClasspathDirs&gt;
-            &lt;additionalClasspathDir&gt;${project.basedir}/build/local&lt;/additionalClasspathDir&gt;
-        &lt;/additionalClasspathDirs&gt;
-    &lt;/configuration&gt;
-&lt;/plugin&gt;
-</code></pre>
-
-<p></plugins>
-```
-只需执行以下命令即可启动服务：</p>
-
-<p><code>
-mvn tomcat6:run
-</code></p>
-
-<p>当然，可以在IDE里面配置执行此Maven Goal，可以方便地启动或者调试。</p>
 ]]></content>
   </entry>
   
