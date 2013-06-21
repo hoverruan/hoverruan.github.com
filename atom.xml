@@ -4,7 +4,7 @@
   <title><![CDATA[一码走天下]]></title>
   <link href="http://hoverruan.github.com/atom.xml" rel="self"/>
   <link href="http://hoverruan.github.com/"/>
-  <updated>2013-06-21T15:48:55+08:00</updated>
+  <updated>2013-06-21T16:05:10+08:00</updated>
   <id>http://hoverruan.github.com/</id>
   <author>
     <name><![CDATA[Hover Ruan]]></name>
@@ -127,6 +127,15 @@ Leader 还有什么用？那是要丢饭碗的！所以他们必须承担执行�
 </span><span class='line'>  <span class="nt">&lt;/configuration&gt;</span>
 </span><span class='line'><span class="nt">&lt;/plugin&gt;</span>
 </span></code></pre></td></tr></table></div></figure>
+
+
+<p>检查的错误信息可以直接查看生成的 <code>checkstyle-results.xml</code> 文件：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>less target/checkstyle-results.xml
+</span></code></pre></td></tr></table></div></figure>
+
+
 
 ]]></content>
   </entry>
