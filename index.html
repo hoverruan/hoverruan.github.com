@@ -9,8 +9,15 @@
   <meta name="author" content="Hover Ruan">
 
   
-  <meta name="description" content="为什么要统一代码风格？ 每个人都有自己喜欢的代码风格，萝卜生菜各有所爱，属于个人的喜好问题。就像穿衣打扮一样，有些人按照自己的审美观来打扮自己，
-也有些人是为了凸显自己的与众不同与个性，还有些不爱收拾、怎么舒服怎么方便就怎么穿的。正是因为不同，我们的世界才是多姿多彩。 在你的团队里面， &hellip;">
+  <meta name="description" content="安装 Redis 2.6.14 CentOS 5.4
+Redis 2.6.14 下载并安装： 1
+2
+3
+4
+$ wget http://redis.googlecode.com/files/redis-2.6.14.tar.gz
+$ cd redis-2.6.14
+$ make
+$ sudo &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -72,6 +79,287 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2013/06/25/config-redis-replication-on-centos-5/">在CentOS上面配置Redis的复制集群</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-25T17:07:00+08:00" pubdate data-updated="true">Jun 25<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>安装 Redis 2.6.14</h2>
+
+<ul>
+<li>CentOS 5.4</li>
+<li>Redis 2.6.14</li>
+</ul>
+
+
+<p>下载并安装：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>wget http://redis.googlecode.com/files/redis-2.6.14.tar.gz
+</span><span class='line'><span class="nv">$ </span><span class="nb">cd </span>redis-2.6.14
+</span><span class='line'><span class="nv">$ </span>make
+</span><span class='line'><span class="nv">$ </span>sudo make install
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>CentOS 5自带的Tcl版本是8.4，Redis的<code>make test</code>需要用到Tcl 8.5以上的版本，如果你需要运行测试用例，请先安装新版本的Tcl，然后再安装Redis：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>wget http://prdownloads.sourceforge.net/tcl/tcl8.6.0-src.tar.gz
+</span><span class='line'><span class="nv">$ </span>tar xzvf tcl8.6.0-src.tar.gz
+</span><span class='line'><span class="nv">$ </span><span class="nb">cd </span>tcl8.6.0/unix
+</span><span class='line'><span class="nv">$ </span>./configure
+</span><span class='line'><span class="nv">$ </span>make
+</span><span class='line'><span class="nv">$ </span>make <span class="nb">test</span>
+</span><span class='line'><span class="nv">$ </span>sudo make install
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>配置 Redis 服务</h2>
+
+<h3>修复安装脚本 utils/install_server.sh 的问题</h3>
+
+<p>这个版本的安装脚本有一个小问题，请看 <a href="https://github.com/antirez/redis/pull/909">#909</a> Pull Request:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='diff'><span class='line'><span class="gu">@@ -159,7 +159,7 @@ REDIS_CHKCONFIG_INFO=\</span>
+</span><span class='line'> # Description: Redis daemon\n
+</span><span class='line'> ### END INIT INFO\n\n&quot;
+</span><span class='line'>
+</span><span class='line'><span class="gd">-if [ !`which chkconfig` ] ; then </span>
+</span><span class='line'><span class="gi">+if [ ! `which chkconfig` ] ; then </span>
+</span><span class='line'>   #combine the header and the template (which is actually a static footer)
+</span><span class='line'>   echo $REDIS_INIT_HEADER &gt; $TMP_FILE &amp;&amp; cat $INIT_TPL_FILE &gt;&gt; $TMP_FILE || die &quot;Could not write init script to $TMP_FILE&quot;
+</span><span class='line'> else
+</span><span class='line'><span class="gu">@@ -173,7 +173,7 @@ echo &quot;Copied $TMP_FILE =&gt; $INIT_SCRIPT_DEST&quot;</span>
+</span><span class='line'>
+</span><span class='line'> #Install the service
+</span><span class='line'> echo &quot;Installing service...&quot;
+</span><span class='line'><span class="gd">-if [ !`which chkconfig` ] ; then </span>
+</span><span class='line'><span class="gi">+if [ ! `which chkconfig` ] ; then </span>
+</span><span class='line'>   #if we&#39;re not a chkconfig box assume we&#39;re able to use update-rc.d
+</span><span class='line'>   update-rc.d redis_$REDIS_PORT defaults &amp;&amp; echo &quot;Success!&quot;
+</span><span class='line'> else
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>修正sudo的时候的环境变量 $PATH 的问题</h3>
+
+<p>默认的情况下，使用<code>sudo</code>命令时的<code>$PATH</code>环境变量只有<code>/usr/bin:/bin</code>两个路径，但是<code>install_server.sh</code>需要更多的路径：</p>
+
+<ul>
+<li><code>chkconfig</code>在<code>/sbin</code>目录下面</li>
+<li><code>redis-server</code>和<code>redis-cli</code>默认安装在<code>/usr/local/bin</code>下面</li>
+</ul>
+
+
+<p>所以我们必须修改<code>sudo</code>命令时的环境变量。我喜欢使用的方式是做一个alias，修改<code>~/.bashrc</code>文件：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">alias </span><span class="nv">sudo</span><span class="o">=</span><span class="s1">&#39;sudo env PATH=/usr/bin:/bin:/sbin:/usr/sbin:/usr/local/bin&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>重新登录以后就可以进行Redis服务的配置了！</p>
+
+<h3>配置 Master-Slave Replication</h3>
+
+<p>首先配置两个Redis实例，分别使用端口<code>6379</code>和<code>6380</code>，把目录安装在<code>/data0/redis/6379</code>和<code>/data0/redis/6380</code>下面：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span><span class="nb">cd </span>utils
+</span><span class='line'><span class="nv">$ </span>sudo ./install_server.sh
+</span><span class='line'>Password:
+</span><span class='line'>
+</span><span class='line'>Welcome to the redis service installer
+</span><span class='line'>This script will <span class="nb">help </span>you easily <span class="nb">set </span>up a running redis server
+</span><span class='line'>
+</span><span class='line'>Please <span class="k">select </span>the redis port <span class="k">for </span>this instance: <span class="o">[</span>6379<span class="o">]</span>
+</span><span class='line'>Selecting default: 6379
+</span><span class='line'>Please <span class="k">select </span>the redis config file name <span class="o">[</span>/etc/redis/6379.conf<span class="o">]</span>
+</span><span class='line'>Selected default - /etc/redis/6379.conf
+</span><span class='line'>Please <span class="k">select </span>the redis log file name <span class="o">[</span>/var/log/redis_6379.log<span class="o">]</span>
+</span><span class='line'>Selected default - /var/log/redis_6379.log
+</span><span class='line'>Please <span class="k">select </span>the data directory <span class="k">for </span>this instance <span class="o">[</span>/var/lib/redis/6379<span class="o">]</span> /data0/redis/6379
+</span><span class='line'>Selected default - /var/lib/redis/6379
+</span><span class='line'>Please <span class="k">select </span>the redis executable path <span class="o">[</span>/usr/local/bin/redis-server<span class="o">]</span>
+</span><span class='line'>s#^port <span class="o">[</span>0-9<span class="o">]{</span>4<span class="o">}</span><span class="nv">$#port</span> 6379#;s#^logfile .+<span class="nv">$#logfile</span> /var/log/redis_6379.log#;s#^dir .+<span class="nv">$#dir</span> /var/lib/redis/6379#;s#^pidfile .+<span class="nv">$#pidfile</span> /var/run/redis_6379.pid#;s#^daemonize no<span class="nv">$#daemonize</span> yes#;
+</span><span class='line'>Copied /tmp/6379.conf <span class="o">=</span>&gt; /etc/init.d/redis_6379
+</span><span class='line'>Installing service...
+</span><span class='line'>Successfully added to chkconfig!
+</span><span class='line'>Successfully added to runlevels 345!
+</span><span class='line'>Starting Redis server...
+</span><span class='line'>Installation successful!
+</span><span class='line'>
+</span><span class='line'><span class="nv">$ </span>sudo ./install_server.sh
+</span><span class='line'>
+</span><span class='line'>Welcome to the redis service installer
+</span><span class='line'>This script will <span class="nb">help </span>you easily <span class="nb">set </span>up a running redis server
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>Please <span class="k">select </span>the redis port <span class="k">for </span>this instance: <span class="o">[</span>6379<span class="o">]</span> 6380
+</span><span class='line'>Please <span class="k">select </span>the redis config file name <span class="o">[</span>/etc/redis/6380.conf<span class="o">]</span>
+</span><span class='line'>Selected default - /etc/redis/6380.conf
+</span><span class='line'>Please <span class="k">select </span>the redis log file name <span class="o">[</span>/var/log/redis_6380.log<span class="o">]</span>
+</span><span class='line'>Selected default - /var/log/redis_6380.log
+</span><span class='line'>Please <span class="k">select </span>the data directory <span class="k">for </span>this instance <span class="o">[</span>/var/lib/redis/6380<span class="o">]</span> /data0/redis/6380
+</span><span class='line'>Selected default - /var/lib/redis/6380
+</span><span class='line'>Please <span class="k">select </span>the redis executable path <span class="o">[</span>/usr/local/bin/redis-server<span class="o">]</span>
+</span><span class='line'>s#^port <span class="o">[</span>0-9<span class="o">]{</span>4<span class="o">}</span><span class="nv">$#port</span> 6380#;s#^logfile .+<span class="nv">$#logfile</span> /var/log/redis_6380.log#;s#^dir .+<span class="nv">$#dir</span> /var/lib/redis/6380#;s#^pidfile .+<span class="nv">$#pidfile</span> /var/run/redis_6380.pid#;s#^daemonize no<span class="nv">$#daemonize</span> yes#;
+</span><span class='line'>Copied /tmp/6380.conf <span class="o">=</span>&gt; /etc/init.d/redis_6380
+</span><span class='line'>Installing service...
+</span><span class='line'>Successfully added to chkconfig!
+</span><span class='line'>Successfully added to runlevels 345!
+</span><span class='line'>Starting Redis server...
+</span><span class='line'>Installation successful!
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>加入我们把 6379 作为 Master，把 6380 作为 Slave，我们只需要修改<code>/etc/redis/6380.conf</code>：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>slaveof 127.0.0.1 6379
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>重启Slave即可完成一个Master-Slave集群的配置：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo service redis_6380 stop
+</span><span class='line'><span class="nv">$ </span>sudo service redis_6380 start
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>测试 Master-Slave 集群</h3>
+
+<p>首先，连接到 Master 并写入数据：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>redis-cli -p 6379
+</span><span class='line'>redis 127.0.0.1:6379&gt; <span class="nb">set </span>hover-name Ruan
+</span><span class='line'>OK
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后连接到 Slave 测试是否能读取到数据，并尝试在 Slave 写数据：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>redis-cli -p 6380
+</span><span class='line'>redis 127.0.0.1:6380&gt; get hover-name
+</span><span class='line'><span class="s2">&quot;Ruan&quot;</span>
+</span><span class='line'>redis 127.0.0.1:6380&gt; <span class="nb">set </span>hover-name Hover
+</span><span class='line'><span class="o">(</span>error<span class="o">)</span> READONLY You can<span class="err">&#39;</span>t write against a <span class="nb">read </span>only slave.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>OK，Master-Slave Replication 算是配置成功了！</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2013/06/21/using-maven-checkstyle-plugin/">使用 Maven Checkstyle Plugin</a></h1>
     
     
@@ -122,7 +410,7 @@ Leader 还有什么用？那是要丢饭碗的！所以他们必须承担执行�
 
 <h2>自动化的代码风格检查</h2>
 
-<p>其实我们的 Team Leader 还是很靠谱的，他意识到这样下去不是办法，而且我们是优秀的程序员，拿到就不能写个程序来自动地对
+<p>其实我们的 Team Leader 还是很靠谱的，他意识到这样下去不是办法，而且我们是优秀的程序员，难道就不能写个程序来自动地对
 大家的代码进行检查吗？大家每次提交代码之前，先运行一次检查程序，没问题了再提交。图灵说了，所有能通过既定的步骤解决的问题，
 都可以用图灵机来解决，目前我们所用到的计算机都是图灵机。</p>
 
@@ -659,6 +947,10 @@ Leader 还有什么用？那是要丢饭碗的！所以他们必须承担执行�
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/06/25/config-redis-replication-on-centos-5/">在CentOS上面配置Redis的复制集群</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/06/21/using-maven-checkstyle-plugin/">使用 Maven Checkstyle Plugin</a>
       </li>
     
@@ -672,10 +964,6 @@ Leader 还有什么用？那是要丢饭碗的！所以他们必须承担执行�
     
       <li class="post">
         <a href="/blog/2013/01/06/using-tomcat-maven-plugin-for-local-development/">在本地开发中使用Tomcat Maven Plugin来简化开发工作</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/12/14/setup-my-blog-using-octopress/">用Octopress创建我的Blog</a>
       </li>
     
   </ul>

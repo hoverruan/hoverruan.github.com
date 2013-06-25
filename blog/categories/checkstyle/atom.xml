@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Checkstyle | 一码走天下]]></title>
   <link href="http://hoverruan.github.com/blog/categories/checkstyle/atom.xml" rel="self"/>
   <link href="http://hoverruan.github.com/"/>
-  <updated>2013-06-21T16:07:32+08:00</updated>
+  <updated>2013-06-25T18:20:04+08:00</updated>
   <id>http://hoverruan.github.com/</id>
   <author>
     <name><![CDATA[Hover Ruan]]></name>
@@ -45,7 +45,7 @@ Leader 还有什么用？那是要丢饭碗的！所以他们必须承担执行�
 
 <h2>自动化的代码风格检查</h2>
 
-<p>其实我们的 Team Leader 还是很靠谱的，他意识到这样下去不是办法，而且我们是优秀的程序员，拿到就不能写个程序来自动地对
+<p>其实我们的 Team Leader 还是很靠谱的，他意识到这样下去不是办法，而且我们是优秀的程序员，难道就不能写个程序来自动地对
 大家的代码进行检查吗？大家每次提交代码之前，先运行一次检查程序，没问题了再提交。图灵说了，所有能通过既定的步骤解决的问题，
 都可以用图灵机来解决，目前我们所用到的计算机都是图灵机。</p>
 
@@ -110,7 +110,7 @@ Leader 还有什么用？那是要丢饭碗的！所以他们必须承担执行�
 
 <p>检查的错误信息可以直接查看生成的 <code>checkstyle-results.xml</code> 文件：</p>
 
-<p><code>shell
+<p><code>bash
 $ less target/checkstyle-results.xml
 </code></p>
 ]]></content>
