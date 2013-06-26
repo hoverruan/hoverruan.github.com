@@ -21,7 +21,8 @@ footer: true
 * [Juven Xu](http://www.juvenxu.com/) 国内的Maven技术专家
 * [Antirez](http://antirez.com/latest/0) Redis的作者
 * [Aphyr](http://aphyr.com/) riemann和tund的作者
-* [Fenng](http://dbanotes.net/) 丁香园作者冯大辉，"淘宝老人，业内八卦王"
+* [Fenng](http://dbanotes.net/) 丁香园作者冯大辉，"淘宝老人，业内八卦王"; 另发行著名的“[小道消息](http://hutu.me/)”
+* [破狼](http://www.cnblogs.com/whitewolf/) 扎西小兄弟的技术博客，博客园上排名前50
 
 Go语言
 ------
