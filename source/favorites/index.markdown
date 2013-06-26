@@ -23,6 +23,7 @@ footer: true
 * [Aphyr](http://aphyr.com/) riemann和tund的作者
 * [Fenng](http://dbanotes.net/) 丁香园作者冯大辉，"淘宝老人，业内八卦王"; 另发行著名的“[小道消息](http://hutu.me/)”
 * [破狼](http://www.cnblogs.com/whitewolf/) 扎西小兄弟的技术博客，博客园上排名前50
+* [郑烨](http://dreamhead.blogbus.com/) 梦想风暴。TW郑大夜校的校长，moco的作者
 
 Go语言
 ------
