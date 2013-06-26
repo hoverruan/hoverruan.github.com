@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: 杂谈 | 亦思亦行]]></title>
+  <title><![CDATA[Category: 杂谈 | 并思并行]]></title>
   <link href="http://hoverruan.github.com/blog/categories/za-tan/atom.xml" rel="self"/>
   <link href="http://hoverruan.github.com/"/>
-  <updated>2013-06-26T10:05:20+08:00</updated>
+  <updated>2013-06-26T11:27:00+08:00</updated>
   <id>http://hoverruan.github.com/</id>
   <author>
     <name><![CDATA[Hover Ruan]]></name>
@@ -121,7 +121,7 @@
 
 <p>JavaScript是目前最流行最前卫的语言，从<a href="https://github.com/languages">Github上面的语言统计</a>可以看出来:</p>
 
-<p>{% img /images/2013/06/github-top-languages.png %}</p>
+<p><img src="/images/2013/06/github-top-languages.png"></p>
 
 <h3>Go</h3>
 
