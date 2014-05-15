@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: 
+
+Sitemap: http://hoverruan.github.com/sitemap.xml 
